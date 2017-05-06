@@ -155,8 +155,25 @@ def update_hand(hand, word):
     word: string
     hand: dictionary (string -> int)    
     returns: dictionary (string -> int)
+
+    ex: hand = {'a':1,'q':1,'l':2,'m':1,'u':1,'i':1}
+    word = 'quail'
+    return {'l':1,'m':1}
     """
     # TO DO ...
+    handcp = hand
+    for c in word:
+        value = handcp[c]
+        value -= 1
+        del handcp[c]
+        handcp[c] = value
+
+    newVal = {}
+    for key in handcp.keys():
+        if handcp[key] > 0:
+            newVal[key] = handcp[key]
+    return newVal
+    
 
 #
 # Problem #3: Test word validity
