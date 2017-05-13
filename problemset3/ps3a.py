@@ -190,20 +190,15 @@ def is_valid_word(word, hand, word_list):
     """
     # TO DO...
 
-    if word in word_list:
-        result = False    
-        handList = get_frequency_dict(hand)
-        wordList = get_frequency_dict(word)
-        for key,value in wordList.items():
-            if key in handList:
-                if handList[key] == value:
-                    result = False
-                    break
-        return result
-       
-    else:
+    if not word in word_list:
         return False
-    
+    else:
+        wordDict = get_frequency_dict(word)
+        for key,value in wordDict.items():
+            if wordDict[key] > hand.get(key,0):
+                return False
+        return True
+
 
 def calculate_handlen(hand):
     handlen = 0
@@ -221,10 +216,10 @@ def play_hand(hand, word_list):
 
     * The hand is displayed.
     
-    * The user may input a word.
+    * The user may input a word. 
 
     * An invalid word is rejected, and a message is displayed asking
-      the user to choose another word.
+      the user to choose another word. 
 
     * When a valid word is entered, it uses up letters from the hand.
 
@@ -243,6 +238,21 @@ def play_hand(hand, word_list):
       
     """
     # TO DO ...
+   
+    score = 0
+    while len(hand) != 0:
+        print 'Current Hand: ',display_hand(hand)
+        word = raw_input('Enter word, or a "." to indicate that you are finished: ')
+        
+        if word == '.':
+            break
+        if is_valid_word(word,hand,word_list):
+            thisScore = get_word_score(word,len(hand))
+            hand = update_hand(hand,word)
+            score += thisScore
+            print '"',word,'" earned ',thisScore,' points. Total: ',score
+        
+    
 
 #
 # Problem #5: Playing a game
@@ -264,6 +274,31 @@ def play_game(word_list):
     * If the user inputs anything else, ask them again.
     """
     # TO DO...
+    prevHand = None
+
+    while True:
+        print 'New Game press "n" '
+        print 'Previous Game press "r"'
+        print 'Exit The Game press "e"'
+        value = raw_input("enter a key")
+        if value == 'e':
+            break
+        elif value == 'n':
+            ranNum = random.randint(0,len(word_list))
+            hand = get_frequency_dict(word_list[ranNum])
+            prevHand = hand
+            play_hand(hand,word_list)
+        elif value == 'r':
+            if prevHand == None:
+                ranNum = random.randint(0,len(word_list))
+                hand = get_frequency_dict(word_list[ranNum])
+                prevHand = hand
+                play_hand(hand,word_list)
+            else:
+                play_hand(prevHand,word_list)
+
+
+    
 
 #
 # Build data structures used for entire session and play game

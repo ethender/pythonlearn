@@ -1,5 +1,7 @@
 from ps3a import *
 
+import random
+
 #
 # Test code
 #
@@ -196,8 +198,17 @@ word_list = load_words()
 ##print "----------------------------------------------------------------------"
 ##print "Testing update_hand..."
 ##test_update_hand()
-print "----------------------------------------------------------------------"
-print "Testing is_valid_word..."
-test_is_valid_word(word_list)
+##print "----------------------------------------------------------------------"
+##print "Testing is_valid_word..."
+##test_is_valid_word(word_list)
 ##print "----------------------------------------------------------------------"
 ##print "All done!"
+
+##number =  random.randint(0,len(word_list))
+##
+##exword = get_frequency_dict(word_list[number])
+##
+##print word_list[number]
+##play_hand(exword,word_list)
+
+play_game(word_list)
