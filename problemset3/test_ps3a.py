@@ -1,5 +1,5 @@
 from ps3a import *
-
+from ps3b import *
 import random
 
 #
@@ -204,11 +204,15 @@ word_list = load_words()
 ##print "----------------------------------------------------------------------"
 ##print "All done!"
 
-##number =  random.randint(0,len(word_list))
+number =  random.randint(0,len(word_list))
 ##
-##exword = get_frequency_dict(word_list[number])
+print word_list[number]
+exword = get_frequency_dict(word_list[number])
+
 ##
 ##print word_list[number]
 ##play_hand(exword,word_list)
 
-play_game(word_list)
+##play_game(word_list)
+
+comp_choose_word(exword,word_list)

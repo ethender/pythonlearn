@@ -17,6 +17,8 @@ def comp_choose_word(hand, word_list):
     word_list: list (string)
     """
     # TO DO...
+    words = get_perms(hand,len(hand))
+    return words[0]
 
 #
 # Problem #6B: Computer plays a hand
