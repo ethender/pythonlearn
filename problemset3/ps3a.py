@@ -191,13 +191,14 @@ def is_valid_word(word, hand, word_list):
     # TO DO...
 
     if word in word_list:
-        result = True    
+        result = False    
         handList = get_frequency_dict(hand)
         wordList = get_frequency_dict(word)
-            for key,value in wordList.items():
-                if not key in handList and not (handList.get(key) == value):
-                ##  print 'comming to False'
+        for key,value in wordList.items():
+            if key in handList:
+                if handList[key] == value:
                     result = False
+                    break
         return result
        
     else:
