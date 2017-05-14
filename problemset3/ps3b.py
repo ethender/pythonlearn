@@ -135,12 +135,17 @@ def play_game(word_list):
                 comp_play_hand(hand,word_list)
 
 
-
+##
+## Game Options
+##
 def playOptions():
     print 'Prees "n", For Play New Game.'
     print 'Press "r", For Play Last Game.'
     print 'Press "e", For Exit The Game.'
 
+##
+## player Options
+##
 def playerOptions():
     print 'Press "u", For User Play'
     print 'Press "c", For Computer Play'
