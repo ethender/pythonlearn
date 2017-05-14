@@ -2,6 +2,8 @@ from ps3a import *
 import time
 from perm import *
 
+import random
+
 
 #
 #
@@ -18,7 +20,12 @@ def comp_choose_word(hand, word_list):
     """
     # TO DO...
     words = get_perms(hand,len(hand))
-    return words[0]
+    if len(words) != 0:
+        ##return words[0]
+        ranNum = random.randint(0,len(words))
+        return words[ranNum]
+    else:
+        return None
 
 #
 # Problem #6B: Computer plays a hand
@@ -27,7 +34,7 @@ def comp_play_hand(hand, word_list):
     """
      Allows the computer to play the given hand, as follows:
 
-     * The hand is displayed.
+     * The hand is displayed. 
 
      * The computer chooses a word using comp_choose_words(hand, word_dict).
 
@@ -42,7 +49,27 @@ def comp_play_hand(hand, word_list):
      hand: dictionary (string -> int)
      word_list: list (string)
     """
-    # TO DO ...    
+    # TO DO ...
+
+    
+    score = 0
+    while len(hand) != 0:
+        display_hand(hand)
+        word = comp_choose_word(hand,word_list)
+        if word != None:
+            thisScore = get_word_score(word,len(hand))
+            update_hand(hand,word)
+            score += thisScore
+            print '"',word,'" earned',thisScore,' points. Total: ',score
+        else:
+            break
+
+    print 'Total score: ',score
+            
+        
+        
+
+    
     
 #
 # Problem #6C: Playing a game
@@ -67,6 +94,58 @@ def play_game(word_list):
     word_list: list (string)
     """
     # TO DO...
+    prevHand = None
+    while True:
+        playOptions()
+        playOption = raw_input("Enter An Option For Game: ")
+        if playOption == 'e':
+            break
+        elif playOption == 'n':
+            playerOptions()
+            playerOption = raw_input("Enter An Option For Player: ")
+            if playerOption == 'u':
+                ranNum = random.randint(0,len(word_list))
+                hand = get_frequency_dict(word_list[ranNum])
+                prevHand = hand
+                play_hand(hand,word_list)
+            elif playerOptions == 'c':
+                ranNum = random.randint(0,len(word_list))
+                hand = get_frequency_dict(word_list[ranNum])
+                prevHand = hand
+                comp_play_hand(hand,word_list)
+        elif playOption == 'r':
+            playerOptions()
+            playerOption = raw_input("Enter An Option For Player: ")
+            if playerOption == 'u':
+                ranNum = random.randint(0,len(word_list))
+                if prevHand == None:
+                    hand = get_frequency_dict(word_list[ranNum])
+                    prevHand = hand
+                else:
+                    hand = prevHand
+                
+                play_hand(hand,word_list)
+            elif playerOptions == 'c':
+                ranNum = random.randint(0,len(word_list))
+                if prevHand == None:
+                    hand = get_frequency_dict(word_list[ranNum])
+                    prevHand = hand
+                else:
+                    hand = prevHand
+                comp_play_hand(hand,word_list)
+
+
+
+def playOptions():
+    print 'Prees "n", For Play New Game.'
+    print 'Press "r", For Play Last Game.'
+    print 'Press "e", For Exit The Game.'
+
+def playerOptions():
+    print 'Press "u", For User Play'
+    print 'Press "c", For Computer Play'
+    
+
         
 #
 # Build data structures used for entire session and play game

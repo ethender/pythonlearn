@@ -258,47 +258,47 @@ def play_hand(hand, word_list):
 # Problem #5: Playing a game
 # Make sure you understand how this code works!
 # 
-def play_game(word_list):
-    """
-    Allow the user to play an arbitrary number of hands.
-
-    * Asks the user to input 'n' or 'r' or 'e'.
-
-    * If the user inputs 'n', let the user play a new (random) hand.
-      When done playing the hand, ask the 'n' or 'e' question again.
-
-    * If the user inputs 'r', let the user play the last hand again.
-
-    * If the user inputs 'e', exit the game.
-
-    * If the user inputs anything else, ask them again.
-    """
-    # TO DO...
-    prevHand = None
-
-    while True:
-        print 'New Game press "n" '
-        print 'Previous Game press "r"'
-        print 'Exit The Game press "e"'
-        value = raw_input("enter a key")
-        if value == 'e':
-            break
-        elif value == 'n':
-            ranNum = random.randint(0,len(word_list))
-            hand = get_frequency_dict(word_list[ranNum])
-            prevHand = hand
-            play_hand(hand,word_list)
-        elif value == 'r':
-            if prevHand == None:
-                ranNum = random.randint(0,len(word_list))
-                hand = get_frequency_dict(word_list[ranNum])
-                prevHand = hand
-                play_hand(hand,word_list)
-            else:
-                play_hand(prevHand,word_list)
-
-
-    
+##def play_game(word_list):
+##    """
+##    Allow the user to play an arbitrary number of hands.
+##
+##    * Asks the user to input 'n' or 'r' or 'e'.
+##
+##    * If the user inputs 'n', let the user play a new (random) hand.
+##      When done playing the hand, ask the 'n' or 'e' question again.
+##
+##    * If the user inputs 'r', let the user play the last hand again.
+##
+##    * If the user inputs 'e', exit the game.
+##
+##    * If the user inputs anything else, ask them again.
+##    """
+##    # TO DO...
+##    prevHand = None
+##
+##    while True:
+##        print 'New Game press "n" '
+##        print 'Previous Game press "r"'
+##        print 'Exit The Game press "e"'
+##        value = raw_input("enter a key")
+##        if value == 'e':
+##            break
+##        elif value == 'n':
+##            ranNum = random.randint(0,len(word_list))
+##            hand = get_frequency_dict(word_list[ranNum])
+##            prevHand = hand
+##            play_hand(hand,word_list)
+##        elif value == 'r':
+##            if prevHand == None:
+##                ranNum = random.randint(0,len(word_list))
+##                hand = get_frequency_dict(word_list[ranNum])
+##                prevHand = hand
+##                play_hand(hand,word_list)
+##            else:
+##                play_hand(prevHand,word_list)
+##
+##
+##    
 
 #
 # Build data structures used for entire session and play game
