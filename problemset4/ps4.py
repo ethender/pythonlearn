@@ -99,6 +99,10 @@ def get_fable_string():
 #
 # Problem 1: Encryption
 #
+
+ceaserTable = (' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
+               'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
+
 def build_coder(shift):
     """
     Returns a dict that can apply a Caesar cipher to a letter.
@@ -121,6 +125,15 @@ def build_coder(shift):
     (The order of the key-value pairs may be different.)
     """
     ### TODO.
+
+    data = {}
+    for i in range(len(ceaserTable)):
+        if (i+shift) > len(ceaserTable):
+            print ceaserTable[i],' = ',ceaserTable[(i+shift) - len(ceaserTable)]
+        else:
+            print ceaserTable[i],' = ',ceaserTable[(i+shift)] 
+
+    
 
 def build_encoder(shift):
     """
