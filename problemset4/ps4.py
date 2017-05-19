@@ -128,11 +128,15 @@ def build_coder(shift):
 
     data = {}
     for i in range(len(ceaserTable)):
-        if (i+shift) > len(ceaserTable):
-            print ceaserTable[i],' = ',ceaserTable[(i+shift) - len(ceaserTable)]
+        if (i+shift) > len(ceaserTable)-1:
+              ## print ceaserTable[i],' = ',ceaserTable[(i+shift) - (len(ceaserTable)-1)]
+            ##print i ,"=",(i+shift)-len(ceaserTable)
+            data[ceaserTable[i]] = ceaserTable[(i+shift) -len(ceaserTable)]
         else:
-            print ceaserTable[i],' = ',ceaserTable[(i+shift)] 
-
+           ## print ceaserTable[i],' = ',ceaserTable[(i+shift)] 
+            ##print i ,"=",i+shift
+            data[ceaserTable[i]] = ceaserTable[i+shift]
+    return data
     
 
 def build_encoder(shift):

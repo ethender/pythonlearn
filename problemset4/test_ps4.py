@@ -1,3 +1,3 @@
 from ps4 import *
 
-build_coder(3)
+print build_coder(3)
