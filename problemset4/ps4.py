@@ -246,6 +246,17 @@ def apply_shift(text, shift):
     'Apq hq hiham a.'
     """
     ### TODO.
+    result = ''
+    coder = apply_coder(text,build_coder(shift))
+
+    for i in range(len(text)):
+        if str.isupper(text[i]) and str.islower(coder[i]):
+            result = result + str.upper(coder[i])
+        elif str.islower(text[i]) and str.isupper(coder[i]):
+            result = result + str.lower(coder[i])
+        else:
+            result = result + coder[i]
+    return result
    
 #
 # Problem 2: Codebreaking.
