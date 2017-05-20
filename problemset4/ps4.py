@@ -219,6 +219,13 @@ def apply_coder(text, coder):
     'Hello, world!'
     """
     ### TODO.
+    result = ''
+    for char in text:
+         if coder.has_key(char):
+            result = result + coder[char]
+         else:
+             result = result + char
+    return result
   
 
 def apply_shift(text, shift):

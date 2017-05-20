@@ -12,6 +12,13 @@ from ps4 import *
 
 
 
-print build_encoder(3)
-print '==================================================='
-print build_decoder(3)
+##print build_encoder(3)
+##print '==================================================='
+##print build_decoder(3)
+
+
+
+encode =  apply_coder("Hello,world!",build_encoder(3))
+print encode
+print '=========================================='
+print apply_coder(encode,build_decoder(3))
