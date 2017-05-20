@@ -100,7 +100,7 @@ def get_fable_string():
 # Problem 1: Encryption
 #
 
-ceaserTable = (' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
+ceaserTable = (' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
                'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
 
 def build_coder(shift):
@@ -125,16 +125,12 @@ def build_coder(shift):
     (The order of the key-value pairs may be different.)
     """
     ### TODO.
-
+    
     data = {}
     for i in range(len(ceaserTable)):
         if (i+shift) > len(ceaserTable)-1:
-              ## print ceaserTable[i],' = ',ceaserTable[(i+shift) - (len(ceaserTable)-1)]
-            ##print i ,"=",(i+shift)-len(ceaserTable)
-            data[ceaserTable[i]] = ceaserTable[(i+shift) -len(ceaserTable)]
+            data[ceaserTable[i]] = ceaserTable[(i+shift) - (len(ceaserTable)-1)]
         else:
-           ## print ceaserTable[i],' = ',ceaserTable[(i+shift)] 
-            ##print i ,"=",i+shift
             data[ceaserTable[i]] = ceaserTable[i+shift]
     return data
     
@@ -167,7 +163,12 @@ def build_encoder(shift):
     HINT : Use build_coder.
     """
     ### TODO.
-
+    if abs(shift) <= 27:
+        return build_coder(abs(shift))
+    else:
+        return None
+    
+    
 def build_decoder(shift):
     """
     Returns a dict that can be used to decode an encrypted text. For example, you
@@ -197,7 +198,11 @@ def build_decoder(shift):
     HINT : Use build_coder.
     """
     ### TODO.
- 
+    if abs(shift) <= 27:
+        return build_coder(-shift)
+    else:
+        return None
+    
 
 def apply_coder(text, coder):
     """
