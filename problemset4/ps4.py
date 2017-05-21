@@ -246,17 +246,33 @@ def apply_shift(text, shift):
     'Apq hq hiham a.'
     """
     ### TODO.
-    result = ''
-    coder = apply_coder(text,build_coder(shift))
+    lower = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',' ')
+    upper = ('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',' ')
 
-    for i in range(len(text)):
-        if str.isupper(text[i]) and str.islower(coder[i]):
-            result = result + str.upper(coder[i])
-        elif str.islower(text[i]) and str.isupper(coder[i]):
-            result = result + str.lower(coder[i])
+    result = ''
+    for char in text:
+        if char.isupper:
+            charind = upper.index(char)
+            value = charind + shift
+            print 'value =',value
+            if value >= 27:
+                print 'comming to if'
+                result = result + upper[value-len(upper)-1]
+            else:
+                print 'comming to else'
+                result = result + upper[value]
+        elif char.islower:
+            charind = lower.index(char)
+            value = charind + shift
+            print 'value =',value
+            if value >= 27:
+                result = result + lower[value-len(upper)-1]
+            else:
+                result = result + lower[value]
         else:
-            result = result + coder[i]
+            result = result + char
     return result
+            
    
 #
 # Problem 2: Codebreaking.
