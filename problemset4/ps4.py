@@ -250,29 +250,24 @@ def apply_shift(text, shift):
     upper = ('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',' ')
 
     result = ''
-    for char in text:
-        if char.isupper:
-            charind = upper.index(char)
-            value = charind + shift
-            print 'value =',value
-            if value >= 27:
-                print 'comming to if'
-                result = result + upper[value-len(upper)-1]
-            else:
-                print 'comming to else'
-                result = result + upper[value]
-        elif char.islower:
-            charind = lower.index(char)
-            value = charind + shift
-            print 'value =',value
-            if value >= 27:
-                result = result + lower[value-len(upper)-1]
-            else:
-                result = result + lower[value]
+    for i in range(len(text)):
+        c = text[i]
+
+        if str.isupper(c):
+            val = upper.index(c)
+            val = val + shift
+            if val >= 26:
+                val = val - 27
+            result = result + upper[val]
+        elif str.islower(c):
+            val = lower.index(c)
+            val = val + shift
+            if val >= 26:
+                val = val - 27
+            result = result + lower[val]
         else:
-            result = result + char
-    return result
-            
+            result = result + c
+    print result
    
 #
 # Problem 2: Codebreaking.
