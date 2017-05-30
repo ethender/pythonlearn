@@ -113,3 +113,30 @@
 ##Means : divide the problem and plan how to write the code
 ##
 
+##def test_primality(n):
+##    if n <= 3:
+##        if n == 2 or n == 3:
+##            return True
+##        else:
+##            return False
+##    else:
+##        for divisor in range(2,int(n**0.5)+1):
+##            if n%divisor == 0:
+##                return False
+##        return True
+##print test_primality(1)
+##print test_primality(2)
+##print test_primality(3)
+##print test_primality(4)
+##print test_primality(5)
+##print test_primality(6)
+##print test_primality(7)
+
+
+
+
+def is_palindrome(a):
+    if len(a) == 0:
+        return True
+    else:
+        return s[0] == s[-1] and is_palindrome(s[1:-1])
