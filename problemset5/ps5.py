@@ -47,6 +47,32 @@ def process(url):
 
 # TODO: NewsStory
 
+class NewsStory(object):
+
+    def __init__(self,guid,title,subject,summary,link):
+        self.guid = guid
+        self.title = title
+        self.subject = subject
+        self.summary = summary
+        self.link = link
+
+
+    def get_guid(self):
+        return self.guid
+
+    def get_title(self):
+        return self.title
+
+    def get_subject(self):
+        return self.subject
+
+    def get_summary(self):
+        return self.summary
+
+    def get_link(self):
+        return self.link
+
+
 #======================
 # Part 2
 # Triggers
@@ -65,10 +91,70 @@ class Trigger(object):
 
 # TODO: WordTrigger
 
-# TODO: TitleTrigger
-# TODO: SubjectTrigger
-# TODO: SummaryTrigger
+class WordTrigger(Trigger):
 
+
+    """ construtor
+        word String"""
+    def __init__(self, word):
+        self.word = word
+
+    def is_word_in(self,text):        
+        textList = text.split(' ')
+
+        if self.word in textList:
+            return True
+        else:
+            exclude = set(string.punctuation)
+            for word in textList:
+                tempChar = []
+                for c in word:
+                    if c not in exclude:
+                        tempChar.append(c)
+                    else:
+                        break
+                removPunctStr = ''.join(tempChar)
+                if self.word == removPunctStr:
+                    return True
+            return False
+
+        
+##
+## Below class  should have to implement the evaluate()  function and must return value
+##  
+## remove punctuation from string 
+##
+##  
+##
+
+
+# TODO: TitleTrigger
+class TitleTrigger(WordTrigger):
+    
+    def __init__(self,word):
+        self.word = word
+        self.trig = WordTrigger(self.word.lower())
+
+    def evaluate(self, story):
+        return self.trig.is_word_in(story.get_title().lower())
+        
+    
+# TODO: SubjectTrigger
+class SubjectTrigger(WordTrigger):
+    def __init__(self,word):
+        self.word = word.lower()
+        self.trig = WordTrigger(self.word.lower())
+    def evaluate(self, story):
+        return is_word_in(story.get_subject().lower())
+
+    
+# TODO: SummaryTrigger
+class SummaryTrigger(WordTrigger):
+    def __init__(self, word):
+        self.word = word.lower()
+
+    def evaluate(self, story):
+        return is_word_in(story.get_summary().lower())
 
 # Composite Triggers
 # Problems 6-8
