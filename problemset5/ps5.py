@@ -142,19 +142,21 @@ class TitleTrigger(WordTrigger):
 # TODO: SubjectTrigger
 class SubjectTrigger(WordTrigger):
     def __init__(self,word):
-        self.word = word.lower()
+        self.word = word
         self.trig = WordTrigger(self.word.lower())
+
     def evaluate(self, story):
-        return is_word_in(story.get_subject().lower())
+        return self.trig.is_word_in(story.get_subject().lower())
 
     
 # TODO: SummaryTrigger
 class SummaryTrigger(WordTrigger):
     def __init__(self, word):
-        self.word = word.lower()
+        self.word = word
+        self.trig = WordTrigger(self.word.lower())
 
     def evaluate(self, story):
-        return is_word_in(story.get_summary().lower())
+        return self.trig.is_word_in(story.get_summary().lower())
 
 # Composite Triggers
 # Problems 6-8
