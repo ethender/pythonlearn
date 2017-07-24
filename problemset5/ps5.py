@@ -99,25 +99,17 @@ class WordTrigger(Trigger):
     def __init__(self, word):
         self.word = word
 
-    def is_word_in(self,text):        
-        textList = text.split(' ')
-
-        if self.word in textList:
+    def is_word_in(self,text):
+        temp = ""
+        for char in text:
+            if char in string.punctuation:
+                temp += str(' ')
+            else:
+                temp += str(char)
+        wordsList = temp.split(' ')
+        if self.word in wordsList:
             return True
-        else:
-            exclude = set(string.punctuation)
-            for word in textList:
-                tempChar = []
-                for c in word:
-                    if c not in exclude:
-                        tempChar.append(c)
-                    else:
-                        break
-                removPunctStr = ''.join(tempChar)
-                if self.word == removPunctStr:
-                    return True
-            return False
-
+        return False
         
 ##
 ## Below class  should have to implement the evaluate()  function and must return value
@@ -162,11 +154,44 @@ class SummaryTrigger(WordTrigger):
 # Problems 6-8
 
 # TODO: NotTrigger
-# TODO: AndTrigger
-# TODO: OrTrigger
 
+class NotTrigger(WordTrigger):
+
+    def __init__(self, notTrigger):
+        self.trig = notTrigger
+    
+    def evaluate(self,story):
+        return not self.trig.evaluate(story)
+
+# TODO: AndTrigger
+
+class AndTrigger(WordTrigger):
+    def __init__(self, trigger1, trigger2):
+        self.trig1 = trigger1
+        self.trig2 = trigger2
+    def evaluate(self,story):
+        return self.trig1.evaluate(story) and self.trig2.evaluate(story)
+# TODO: OrTrigger
+    
+class OrTrigger(WordTrigger):
+    def __init__(self, trigger1, trigger2):
+        self.trig1 = trigger1
+        self.trig2 = trigger2
+    def evaluate(self,story):
+        return self.trig1.evaluate(story) or self.trig2.evaluate(story)
+    
 
 # Phrase Trigger
+
+class PhraseTrigger(WordTrigger):
+    def __init__(self,word):
+        self.word = word
+        self.trig = WordTrigger
+
+    def evaluate(self,word):
+        return self.trig.is_word_in(word.get_title) or self.trig.is_word_in(word.get_subject) or self.trig.is_word_in(word.get_summary) 
+        
+
 # Question 9
 
 # TODO: PhraseTrigger
