@@ -21,20 +21,46 @@ from ps5 import *
 ##print s1.evaluate(caps)
 
 
-class TrueTrigger:
-    def evaluate(self, story): return True
+##class TrueTrigger:
+##    def evaluate(self, story): return True
+##
+##class FalseTrigger:
+##    def evaluate(self, story): return False
+##
+##tt = TrueTrigger()
+##ft = FalseTrigger()
+##
+##b = NewsStory("guid", "title", "subj", "summary", "link")
+##
+##
+##n = NotTrigger(tt)
+##print 'False',n.evaluate(b)
+##
+##y = NotTrigger(ft)
+##print 'True',y.evaluate(b)
 
-class FalseTrigger:
-    def evaluate(self, story): return False
-
-tt = TrueTrigger()
-ft = FalseTrigger()
-
-b = NewsStory("guid", "title", "subj", "summary", "link")
 
 
-n = NotTrigger(tt)
-print 'False',n.evaluate(b)
 
-y = NotTrigger(ft)
-print 'True',y.evaluate(b)
+
+
+pt = PhraseTrigger("New York City")
+a = NewsStory('', "asfdNew York Cityasfdasdfasdf", '', '', '')
+b = NewsStory('', '', "asdfasfdNew York Cityasfdasdfasdf", '', '')
+c = NewsStory('', '', '', "asdfasfdNew York Cityasfdasdfasdf", '')
+noa = NewsStory('', "something something new york city", '', '', '')
+nob = NewsStory('', '', "something something new york city", '', '')
+noc = NewsStory('', '', '', "something something new york city", '')
+
+
+t = [a,b,c]
+f = [noa, nob, noc]
+
+print 'True Value' 
+for tItem in t:
+    print pt.evaluate(tItem)
+
+print 'False Value'
+for fItem in f:
+    print pt.evaluate(fItem)
+

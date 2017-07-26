@@ -184,12 +184,13 @@ class OrTrigger(WordTrigger):
 # Phrase Trigger
 
 class PhraseTrigger(WordTrigger):
-    def __init__(self,word):
-        self.word = word
-        self.trig = WordTrigger
+    def __init__(self,text):
+        self.text = text
+        print 'word: ',self.text
+        self.trig = WordTrigger(self.text.lower())
 
     def evaluate(self,word):
-        return self.trig.is_word_in(word.get_title) or self.trig.is_word_in(word.get_subject) or self.trig.is_word_in(word.get_summary) 
+        return self.text in word.get_title() or self.text in word.get_subject() or self.text in word.get_summary()
         
 
 # Question 9
@@ -211,7 +212,15 @@ def filter_stories(stories, triggerlist):
     # TODO: Problem 10
     # This is a placeholder (we're just returning all the stories, with no filtering) 
     # Feel free to change this line!
-    return stories
+    ##return stories
+    listOfStories = []
+    for trig in triggerList:
+        for story in stories:
+            if trig.evaluate(story) and story not in listOfStories:
+                    listOfStores.append(story)
+    return listOfStories
+                    
+                
 
 #======================
 # Part 4
