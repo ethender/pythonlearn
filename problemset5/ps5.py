@@ -248,6 +248,38 @@ def readTriggerConfig(filename):
     # 'lines' has a list of lines you need to parse
     # Build a set of triggers from it and
     # return the appropriate ones
+    dicts = {}
+    triggerList = []
+    for li in lines:
+        temp = li.split(' ')
+        if str.lower(temp[1]) == 'subject':
+            trig = SubjectTrigger(temp[2])
+            dicts[temp[0]] = trig
+        elif str.lower(temp[1]) == 'title':
+            trig = TitleTrigger(temp[2])
+            dicts[temp[0]] = trig
+        elif str.lower(temp[1]) == 'summary':
+            trig = SummaryTrigger(temp[2])
+            dicts[temp[0]] = trig
+        elif str.lower(temp[1]) == 'pharse':
+            trig = PhraseTrigger(temp[2])
+            dicts[temp[0]] = trig
+        elif str.lower(temp[1]) == 'not':
+            trig = NotTrigger(temp[2])
+            dicts[temp[0]] = trig
+        elif str.lower(temp[1]) == 'and':
+            trig = AndTrigger(temp[2],temp[3])
+            dicts[temp[0]] = trig
+        elif str.lower(temp[1]) == 'or':
+            trig = OrTrigger(temp[2],temp[3])
+            dicts[temp[0]] = trig
+        else:
+            if str.lower(temp[0]):
+                for i in range(1,len(temp)):
+                    triggerList.append(dicts.get(temp[i]))
+        return triggerList
+
+    
     
 import thread
 
@@ -262,7 +294,9 @@ def main_thread(p):
     
     # TODO: Problem 11
     # After implementing readTriggerConfig, uncomment this line 
-    #triggerlist = readTriggerConfig("triggers.txt")
+    triggerlist = readTriggerConfig("triggers.txt")
+
+    
 
     guidShown = []
     
