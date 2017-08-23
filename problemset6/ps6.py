@@ -1,4 +1,4 @@
-# Problem Set 6: Simulating robots
+﻿# Problem Set 6: Simulating robots
 # Name:
 # Collaborators:
 # Time:
@@ -25,6 +25,10 @@ class Position(object):
         return self.x
     def getY(self):
         return self.y
+    def setX(self,x):
+        self.x = x
+    def setY(self, y):
+        self.y = y
     def getNewPosition(self, angle, speed):
         """
             Computes and returns the new Position after a single clock-tick has
@@ -43,9 +47,18 @@ class Position(object):
         delta_y = speed * math.cos(math.radians(angle))
         delta_x = speed * math.sin(math.radians(angle))
         # Add that to the existing position
-        new_x = old_x + delta_x
-        new_y = old_y + delta_y
+        new_x = int(old_x + delta_x)
+        new_y = int(old_y + delta_y)
+
+        ##rounding off
+##        new_x = int(math.ceil(new_x))
+##        new_y = int(math.ceil(new_y))
         return Position(new_x, new_y)
+    def __str__(self):
+        ##print("X Axis: ",self.x," Y Axis: ",self.y)
+        return "X Axis: ",self.x," Y Axis: ",self.y
+    def __eq__(self, other):
+        return self.getX() == other.getX() and self.getY() == other.getY()
 
 # === Problems 1
 
@@ -84,8 +97,9 @@ class RectangularRoom(object):
         pos: a Position
         """
             #raise NotImplementedError
-        if self.roomTiles.has_key(pos):
+        if not self.isTileCleaned(pos.getX(),pos.getY()):
             self.roomTiles[pos] = True
+        
         
     def isTileCleaned(self, m, n):
         """
@@ -142,7 +156,11 @@ class RectangularRoom(object):
         returns: True if pos is in the room, False otherwise.
         """
         #raise NotImplementedError
-        return self.roomTiles.has_key(pos)
+        #return self.roomTiles.has_key(pos)
+        for roomPos in self.roomTiles.keys():
+            if roomPos == pos:
+                return True
+        return False
 
 
 class Robot(object):
@@ -218,11 +236,18 @@ class Robot(object):
         
         """
             1. first clean first position
-            2. update the position
+            2. update the next position
+                a. if next position available then update
+                b. else search for next position
         """
         self.room.cleanTileAtPosition(self.position)
         pos = self.position.getNewPosition(self.direction,self.speed)
-        self.setRobotPosition(pos)
+        print('Next position: x=',pos.getX(),' y=',pos.getY())
+        if self.room.isPositionInRoom(pos):
+            self.setRobotPosition(pos)
+        else:
+            print("position is not in room")
+            
 
 
 
@@ -241,16 +266,25 @@ class StandardRobot(Robot):
             Move the robot to a new position and mark the tile it is on as having
             been cleaned.
         """
-        #raise NotImplementedError
-        if not self.room.isTileCleaned(self.position.getX(),self.position.getY()):
-            self.room.cleanTileAtPosition(self.position)
-        while True:
-           pos = self.position.getNewPosition(self.direction,self.speed)
-           if self.room.isPositionInRoom(pos):
-               self.setRobotPosition(pos)
-               break
-           else:
-                self.direction = random.choice(range(360))
+        ##raise NotImplementedError
+        self.room.cleanTileAtPosition(self.position)
+        nextXDirection = Position(self.position.getX()+1,self.position.getY())
+        nextYDirection = Position(self.position.getX(),self.position.getY()+1)
+        if self.room.isPositionInRoom(nextXDirection) :
+            self.setRobotPosition(nextXDirection())
+        elif self.room.isPositionInRoom(nextYDirection):
+             self.setRobotPosition(nextYDirection())
+        else:
+            pos = self.position.getNewPosition(self.direction,self.speed)
+        
+            print('Next position: x=',pos.getX(),' y=',pos.getY())
+            if self.room.isPositionInRoom(pos):
+                self.setRobotPosition(pos)
+            else:
+                print("position is not in room")
+            
+        
+        
 
 # === Problem 3
 
@@ -272,22 +306,8 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
         robot_type: class of robot to be instantiated (e.g. Robot or
         RandomWalkRobot)
     """
-    # raise NotImplementedError
-    room = RectangularRoom(width, height)
-    pos = room.getRandomPosition
-    #room.cleanTileAtPosition(pos)
-    robots = []
-    for i in range(num_robots):
-        temp = robot_type(room,speed)
-        robots.append(temp)
-    anim = ps6_visualize.RobotVisualization(num_robots,width,height)
-    
-    for j in range(num_trials):
-        for robot in  robots:
-            robot.updatePositionAndClean()
-        anim.update(room, robots)
-    anim.done()
-            
+     #raise NotImplementedError
+  
     
     
 
