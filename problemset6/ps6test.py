@@ -14,7 +14,7 @@ speed = 1.0
 
 from ps6 import *
 
-room = RectangularRoom(width,height)
+##room = RectangularRoom(width,height)
 
 
 def checkPosition(rooms):
@@ -28,10 +28,19 @@ def getCleanedTileLocation(rooms):
 
 
 ##checkPosition(room)
-robo  = Robot(room, speed)
-pos = robo.getRobotPosition()
-direction = robo.getRobotDirection()
-print("Now Robo Position: x=",pos.getX(),', y=',pos.getY(),', direction= ',str(direction))
-print(room.isPositionInRoom(pos))
-robo.updatePositionAndClean()
-getCleanedTileLocation(room)
+##robo  = Robot(room, speed)
+##robo = StandardRobot(room, speed)
+##pos = robo.getRobotPosition()
+##direction = robo.getRobotDirection()
+##print("Now Robo Position: x=",pos.getX(),', y=',pos.getY(),', direction= ',str(direction))
+##print(room.isPositionInRoom(pos))
+##robo.updatePositionAndClean()
+##getCleanedTileLocation(room)
+
+
+#runSimulation(10, 1.0, 15, 20, 0.8, 30, StandardRobot)
+
+import  ps6_visualize
+
+
+ps6_visualize.RobotVisualization(10,15,20,0.2)

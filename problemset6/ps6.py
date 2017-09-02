@@ -240,13 +240,13 @@ class Robot(object):
                 a. if next position available then update
                 b. else search for next position
         """
-        self.room.cleanTileAtPosition(self.position)
         pos = self.position.getNewPosition(self.direction,self.speed)
         print('Next position: x=',pos.getX(),' y=',pos.getY())
         if self.room.isPositionInRoom(pos):
             self.setRobotPosition(pos)
         else:
             print("position is not in room")
+        self.room.cleanTileAtPosition(self.position)
             
 
 
@@ -267,22 +267,17 @@ class StandardRobot(Robot):
             been cleaned.
         """
         ##raise NotImplementedError
-        self.room.cleanTileAtPosition(self.position)
-        nextXDirection = Position(self.position.getX()+1,self.position.getY())
-        nextYDirection = Position(self.position.getX(),self.position.getY()+1)
-        if self.room.isPositionInRoom(nextXDirection) :
-            self.setRobotPosition(nextXDirection())
-        elif self.room.isPositionInRoom(nextYDirection):
-             self.setRobotPosition(nextYDirection())
-        else:
-            pos = self.position.getNewPosition(self.direction,self.speed)
-        
-            print('Next position: x=',pos.getX(),' y=',pos.getY())
-            if self.room.isPositionInRoom(pos):
-                self.setRobotPosition(pos)
+        while True:
+            tempPos = self.position.getNewPosition(self.direction,self.speed)
+            if self.room.isPositionInRoom(tempPos):
+                self.position = tempPos
+                print("Next position avaiable")
+                break
             else:
-                print("position is not in room")
-            
+                self.direction = random.choice(range(360))
+                print("Changing direction")
+        self.room.cleanTileAtPosition(self.position)
+        
         
         
 
@@ -306,9 +301,30 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
         robot_type: class of robot to be instantiated (e.g. Robot or
         RandomWalkRobot)
     """
+    def initsRobots(number, room, roboSpeed, roboType):
+        robos = []
+        for i in range(number):
+            initRobo = roboType(room, roboSpeed)
+            robos.append(initRobo)
+        return robos
+    def allRobotsUpdateAndClean(roboArray):
+        for robo in roboArray:
+            robo.updatePositionAndClean()
+            
      #raise NotImplementedError
-  
-    
+    totalCoverageEachTrial = 0
+    for i in  range(num_trials):
+        room = RectangularRoom(width, height)
+        robos = initsRobots(num_robots,room, speed, robot_type)
+        totalCoverage = 0
+        anim = ps6_visualize.RobotVisualization(num_robots, width, height)
+        while totalCoverage < min_coverage:
+            allRobotsUpdateAndClean()
+            anim.update(room, robos)
+            totalCoverage = (room.getNumCleanedTiles()/room.getNumTiles())*100
+        totalCoverageEachTrial += totalCoverage
+        anim.done()    
+
     
 
 # === Problem 4
