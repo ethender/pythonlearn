@@ -41,6 +41,9 @@ class SimpleVirus(object):
         """
 
         # TODO
+        self.maxBirthProb = maxBirthProb
+        self.clearProb = clearProb
+
 
     def doesClear(self):
 
@@ -51,6 +54,8 @@ class SimpleVirus(object):
         """
 
         # TODO
+        return (self.clearProb == 1)
+        
 
     
     def reproduce(self, popDensity):
@@ -75,7 +80,12 @@ class SimpleVirus(object):
         """
 
         # TODO
-
+        canGiveBirth = int(self.maxBirthProb * (1-popDensity)) 
+        if canGiveBirth== 1:
+            return SimpleVirus(self.maxBirthProb,self.clearProb)
+        else:
+            raise NoChildException()
+            
 
 
 class SimplePatient(object):
@@ -99,6 +109,8 @@ class SimplePatient(object):
         """
 
         # TODO
+        self.viruses = viruses
+        self.maxPop = maxPop
 
 
     def getTotalPop(self):
@@ -108,7 +120,8 @@ class SimplePatient(object):
         returns: The total virus population (an integer)
         """
 
-        # TODO        
+        # TODO
+        return len(self.maxPop)
 
 
     def update(self):
@@ -129,6 +142,18 @@ class SimplePatient(object):
         """
 
         # TODO
+        for virus in self.viruses:
+            if virus.doesClear():
+                self.viruses.remove(virus)
+                del(virus) ## check is this work
+            else:
+                try:
+                    anotherVirus = virus.reproduce(self.maxPop)
+                    self.viruses.append(anotherVirus)
+                except NoChildException as noChild:
+                    print('No Child for virus creature')
+        return len(self.viruses)
+                
 
 
 
