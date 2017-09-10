@@ -54,7 +54,10 @@ class SimpleVirus(object):
         """
 
         # TODO
-        return (self.clearProb == 1)
+        if self.clearProb > 0.1:
+            return random.choice([True,False])
+        else:
+            return False
         
 
     
@@ -80,9 +83,13 @@ class SimpleVirus(object):
         """
 
         # TODO
-        canGiveBirth = int(self.maxBirthProb * (1-popDensity)) 
-        if canGiveBirth== 1:
-            return SimpleVirus(self.maxBirthProb,self.clearProb)
+        canGiveBirth = int(self.maxBirthProb * (1-popDensity))
+        #print('Give Birth: ',str(canGiveBirth))
+        if abs(canGiveBirth) > 75:
+            if random.choice([True,False]):
+                return SimpleVirus(self.maxBirthProb,self.clearProb)
+            else:
+                raise NoChildException()
         else:
             raise NoChildException()
             
@@ -142,17 +149,22 @@ class SimplePatient(object):
         """
 
         # TODO
-        for virus in self.viruses:
-            if virus.doesClear():
-                self.viruses.remove(virus)
-                del(virus) ## check is this work
-            else:
-                try:
-                    anotherVirus = virus.reproduce(self.maxPop)
-                    self.viruses.append(anotherVirus)
-                except NoChildException as noChild:
-                    print('No Child for virus creature')
+        if len(self.viruses) < self.maxPop:
+            for virus in self.viruses:
+                if virus.doesClear():
+                    self.viruses.remove(virus)
+                    del(virus) ## check is this work
+                else:
+                    if len(self.viruses) < self.maxPop:
+                        try:
+                            anotherVirus = virus.reproduce(self.maxPop)
+                            self.viruses.append(anotherVirus)
+                        except NoChildException as noChild:
+                            None
+                    else:
+                        None
         return len(self.viruses)
+        
                 
 
 
@@ -170,3 +182,39 @@ def simulationWithoutDrug():
     """
 
     # TODO
+    initialVirus = 100
+    maxVirusPorablility = 1000
+    maxBirthProb = 0.1
+    clearProb = 0.05
+    timeSteps = 300
+
+    resultX = []
+    resultY = []
+
+    title = 'Virus population growth without drugs'
+    xLabel = 'Time Steps'
+    yLabel = 'Virus Population'
+
+    def createVirus(virusNum, maxBirth ,clear):
+        result = []
+        for i in range(virusNum):
+            result.append(SimpleVirus(maxBirth, clear))
+        return result
+    viruses = createVirus(initialVirus, maxBirthProb, clearProb)
+    patient = SimplePatient(viruses, maxVirusPorablility)
+
+    #print('virus created',str(len(viruses)))
+
+    for i in range(300):
+            resultY.append(patient.update())
+            resultX.append(i)
+
+    #print('xCoord:  ',resultX)
+    #print('yCoord:  ',resultY)
+    pylab.plot(resultX,resultY)
+    pylab.title(title)
+    pylab.xlabel(xLabel)
+    pylab.ylabel(yLabel)
+    pylab.show()
+    
+simulationWithoutDrug()
