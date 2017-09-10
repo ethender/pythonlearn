@@ -54,10 +54,12 @@ class SimpleVirus(object):
         """
 
         # TODO
-        if self.clearProb > 0.1:
-            return random.choice([True,False])
-        else:
-            return False
+####        if self.clearProb > 0.1:
+####            return random.choice([True,False])
+####        else:
+####            return False
+        return random.random() < self.clearProb
+            
         
 
     
@@ -85,13 +87,18 @@ class SimpleVirus(object):
         # TODO
         canGiveBirth = int(self.maxBirthProb * (1-popDensity))
         #print('Give Birth: ',str(canGiveBirth))
-        if abs(canGiveBirth) > 75:
-            if random.choice([True,False]):
-                return SimpleVirus(self.maxBirthProb,self.clearProb)
-            else:
-                raise NoChildException()
+##        if abs(canGiveBirth) > 75:
+##            if random.choice([True,False]):
+##                return SimpleVirus(self.maxBirthProb,self.clearProb)
+##            else:
+##                raise NoChildException()
+##        else:
+##            raise NoChildException()
+        if random.random() < canGiveBirth:
+            return SimpleVirus(self.maxBirthProb, self.clearProb)
         else:
             raise NoChildException()
+        
             
 
 
