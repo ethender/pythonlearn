@@ -58,7 +58,7 @@ class SimpleVirus(object):
 ####            return random.choice([True,False])
 ####        else:
 ####            return False
-        return random.random() < self.clearProb
+        return random.random() <= self.clearProb
             
         
 

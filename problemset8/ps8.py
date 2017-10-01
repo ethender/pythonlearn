@@ -107,8 +107,23 @@ class ResistantVirus(SimpleVirus):
         NoChildException if this virus particle does not reproduce.         
         """
         # TODO
+        ##Mutation Probability
+        ##
+        for drug in activeDrugs:
+            if not self.resistances.has_key(drug):
+                if random.Random() <= self.mutProb:
+                    self.resistances[drug] = True
 
-            
+
+         ## if this doesn`t have resistance for any drug then it can`t reproduce
+        for drug,isResistant in self.resistances.items():
+            if not isResistant:
+                return NoChildException()
+
+        ## probability for reporducing in suitable conditions
+        if random.Random() <= self.maxBirthProb * (1 - popDensity):
+            return (ResistantVirus(self.maxBirthProb,self.clearProb,self.resistances,self.mutProb))
+                    
 
 class Patient(SimplePatient):
 
@@ -129,6 +144,9 @@ class Patient(SimplePatient):
         maxPop: the  maximum virus population for this patient (an integer)
         """
         # TODO
+        self.viruses = viruses
+        self.maxPop = maxPop
+        self.pescriptions = []
     
 
     def addPrescription(self, newDrug):
@@ -144,7 +162,8 @@ class Patient(SimplePatient):
         """
         # TODO
         # should not allow one drug being added to the list multiple times
-
+        if not newDrug in self.pescriptions:
+            self.pescriptions.append(newDrug)
 
     def getPrescriptions(self):
 
@@ -155,6 +174,7 @@ class Patient(SimplePatient):
         """
 
         # TODO
+        return self.pescriptions
         
 
     def getResistPop(self, drugResist):
@@ -169,6 +189,18 @@ class Patient(SimplePatient):
         drugs in the drugResist list.
         """
         # TODO
+        for i in range(len(self.viruses)):
+            virus = self.viruses.pop(i)
+            result = True
+            for drug in self.pescriptions:
+                if not virus.isResistantTo(drug):
+                    result = False
+            if not result:
+                del(virus)
+            else:
+                self.viruses.append(virus)
+        return len(self.viruses)
+            
                    
 
 
@@ -191,6 +223,21 @@ class Patient(SimplePatient):
         integer)
         """
         # TODO
+        getResistPop(self.pescriptions)
+        for i in range(len(self.viruses)):
+            virus = self.viruses.pop(i)
+            if virus.doesClear():
+                del(virus)
+            else:
+                self.viruses.append(virus)
+                try:
+                    if len(self.viruses) < self.maxPop:
+                        childVirus = virus.reproduce(self.maxPop, self.pescriptions)
+                        self.viruses.append(childVirus)
+                except NoChildException as noChild:
+                    None
+        return len(self.viruses)
+    
 
 
 
