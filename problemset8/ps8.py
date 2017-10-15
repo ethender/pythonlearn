@@ -9,7 +9,7 @@
 import numpy
 import random
 import pylab
-from ps7 import *
+from ps7my import *
 
 #
 # PROBLEM 1
@@ -46,7 +46,7 @@ class ResistantVirus(SimpleVirus):
         self.clearProb = clearProb
         self.resistances = resistances
         self.mutProb = mutProb
-        
+        self.simpleVirus = SimpleVirus(self.maxBirthProb,self.clearProb)
 
 
 
@@ -147,6 +147,7 @@ class Patient(SimplePatient):
         self.viruses = viruses
         self.maxPop = maxPop
         self.pescriptions = []
+        
     
 
     def addPrescription(self, newDrug):
@@ -189,16 +190,10 @@ class Patient(SimplePatient):
         drugs in the drugResist list.
         """
         # TODO
-        for i in range(len(self.viruses)):
-            virus = self.viruses.pop(i)
-            result = True
-            for drug in self.pescriptions:
-                if not virus.isResistantTo(drug):
-                    result = False
-            if not result:
+        for virus in self.viruses:
+            if not virus.isResistantTo(drugResist):
+                self.viruses.remove(virus)
                 del(virus)
-            else:
-                self.viruses.append(virus)
         return len(self.viruses)
             
                    
@@ -223,23 +218,34 @@ class Patient(SimplePatient):
         integer)
         """
         # TODO
-        getResistPop(self.pescriptions)
-        for i in range(len(self.viruses)):
-            virus = self.viruses.pop(i)
+##        self.getResistPop(self.pescriptions)
+##        for i in range(len(self.viruses)):
+##            try:
+##                if i < self.viruses:
+##                    virus = self.viruses.pop(i)
+##                    if type(virus) != NoChildException:
+##                        if virus.simpleVirus.doesClear():
+##                            del(virus)
+##                        else:
+##                            self.viruses.append(virus)
+##                            if len(self.viruses) < self.maxPop:
+##                                childVirus = virus.reproduce(self.maxPop, self.pescriptions)
+##                                self.viruses.append(childVirus)
+##            except NoChildException as noChild:
+##                    None
+##                
+##        return len(self.viruses)
+        for virus in self.viruses:
             if virus.doesClear():
+                self.viruses.remove(virus)
                 del(virus)
             else:
-                self.viruses.append(virus)
                 try:
                     if len(self.viruses) < self.maxPop:
-                        childVirus = virus.reproduce(self.maxPop, self.pescriptions)
-                        self.viruses.append(childVirus)
+                        anotherVirus = virus.reproduce(len(self.viruses)/self.maxPop,self.pescriptions)
                 except NoChildException as noChild:
-                    None
+                        None
         return len(self.viruses)
-    
-
-
 
 #
 # PROBLEM 2
@@ -256,7 +262,64 @@ def simulationWithDrug():
     vs. time are plotted
     """
     # TODO
+    timeSteps = 150
+    numTrials = 300
+    maxPopulation = 1000
+    population = 100
+    clearProb = 0.05
+    mutProb = 0.005
+    noGuttagonolResults = []
+    guttagonolResults = []
+    maxBirthProb = 0.1
+    def createResistantVirus(population, maxBirthProb, clearProb,resistances,mutProb):
+            totalVirus = []
+            for i in range(population):
+                 childVirus = ResistantVirus(maxBirthProb,clearProb,resistances,mutProb)
+                 totalVirus.append(childVirus)
+            return totalVirus
 
+    
+    
+    for i in range(timeSteps):
+        timeStepResults = []
+        virusresult = createResistantVirus(population,maxBirthProb,clearProb,{"guttagonol":False},mutProb)
+        patient = Patient(virusresult,maxPopulation)
+        for j in  range(numTrials):
+            try:
+                timeStepResults.append(patient.update())
+            except NoChildException as noChild:
+                None
+        noGuttagonolResults.append(sum(timeStepResults)/len(timeStepResults))
+        del(timeStepResults)
+        del(patient)
+        del(virusresult)
+
+    for k in range(timeSteps):
+        timeStepResults = []
+        virusresult = createResistantVirus(population,clearProb,{"guttagonol":True},mutProb)
+        patient = Patient(virusresult,maxPopulation)
+        for l in  range(numTrials):
+            try:
+                timeStepResults.append(patient.update())
+            except NoChildException as noChild:
+                continue
+        guttagonolResults.append(sum(timeStepResults)/len(timeStepResults))
+        del(timeStepResults)
+        del(patient)
+        del(virusresult)
+        
+                
+    pylab.plot(noGuttagonolResults)
+    pylab.ylabel("VirusPopulation")
+    pylab.xlabel("Time Steps")
+    pylab.title("Virus Population With no guttagonol")
+    pylab.figure(2)
+    pylab.plot(guttagonolResults)
+    pylab.ylabel("VirusPopulation")
+    pylab.xlabel("Time Steps")
+    pylab.title("Virus Population With guttagonol")
+    pylab.show()
+    
 
 
 #
