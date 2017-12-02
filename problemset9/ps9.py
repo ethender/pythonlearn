@@ -27,8 +27,11 @@ def loadSubjects(filename):
     # The following sample code reads lines from the specified file and prints
     # each one.
     inputFile = open(filename)
+    results = {}
     for line in inputFile:
-        print line
+        subject,value,work = line.split(',')
+        results[subject] = (int(value),int(work))
+    return results
 
     # TODO: Instead of printing each line, modify the above to parse the name,
     # value, and work of each subject and create a dictionary mapping the name
