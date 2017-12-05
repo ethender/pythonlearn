@@ -68,6 +68,7 @@ def cmpValue(subInfo1, subInfo2):
     value in (value, work) tuple in subInfo2
     """
     # TODO...
+    return subInfo1[0] > subInfo2[0]
 
 def cmpWork(subInfo1, subInfo2):
     """
@@ -75,6 +76,7 @@ def cmpWork(subInfo1, subInfo2):
     in (value, work) tuple in subInfo2
     """
     # TODO...
+    return subInfo1[1] < subInfo2[1]
 
 def cmpRatio(subInfo1, subInfo2):
     """
@@ -82,6 +84,8 @@ def cmpRatio(subInfo1, subInfo2):
     GREATER than value/work in (value, work) tuple in subInfo2
     """
     # TODO...
+    return subInfo1[0] > subInfo2[0] or subInfo1[1] > subInfo2[1]
+        
 
 def greedyAdvisor(subjects, maxWork, comparator):
     """
