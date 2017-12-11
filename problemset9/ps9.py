@@ -100,6 +100,9 @@ def greedyAdvisor(subjects, maxWork, comparator):
     returns: dictionary mapping subject name to (value, work)
     """
     # TODO...
+    subjectsCopy = sorted(subjects,key=comparator,reverse=True)
+    keys = subjectsCopy.keys()
+    return {keys[0]:subjects[keys[0]]}
 
 #
 # Problem 3: Subject Selection By Brute Force
@@ -115,5 +118,14 @@ def bruteForceAdvisor(subjects, maxWork):
     returns: dictionary mapping subject name to (value, work)
     """
     # TODO...
-
+    totalWork = 0.0
+    resultSubj = ''
+    for k,v in subjects.items():
+	if resultSubj == '':
+	     resultSubj = k
+	else:
+	     if v < subjects[k]:
+		resultSubj = 'k'
+	
+     return {resultSubj:subjects[resultSubj]}
 
