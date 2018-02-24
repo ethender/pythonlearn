@@ -1,63 +1,47 @@
 
-## Write a program to calculate the credit card balance after one year if a person only pays the
-## minimum monthly payment required by the credit card company each month.
+
+##minimum monthly payment
+def minimumMonthlyPayment(monthlyPaymentRate, balance):
+    return (monthlyPaymentRate*balance)
 
 
+##interest paid 
+def interestPaid(annualInterest,balance):
+    monthlyInterest = annualInterest/12.0
+    return (monthlyInterest*balance)
+
+## principal amount
+def prinicipal(minimum, interest):
+    return (minimum - interest)
+
+## remaining balance
+def remainingBalance(balance , principal):
+    return (balance - principal)
+
+## calculate whole for a year
+def calculate(outstanding, annual, minimumMonthlyRate):
+    balance = outstanding
+    totalPP = 0
+    for i in range(1,13) :
+        ma = minimumMonthlyPayment(minimumMonthlyRate, balance)
+        ip = interestPaid(annual,balance)
+        pp = prinicipal(ma,ip)
+        balance = remainingBalance(balance, pp)
+        print 'Month: '+str(i)
+        print 'Minimum monthly payment: $'+str(round(ma,2))
+        print 'Principle paid: $'+str(round(pp,2))
+        print 'Remianing balance: $'+str(round(balance,2))
+        totalPP += pp
+    print 'Total amount paid: $'+str(round(totalPP,2))
+    print 'Remaining balance: $'+str(round(balance,2))
+        
+## main
+def main():
+    outstandingBalance = float(raw_input('Enter the outstanding balance on your credit card: '))
+    annualInterest = float(raw_input('Enter an annual credit card interest rate as a decimal: '))
+    minimumMonthly = float(raw_input('Enter the minimum monthly payment rate as a decimal: '))
+    calculate(outstandingBalance,annualInterest,minimumMonthly)
 
 
-
-#
-## Calculates the minimummonthly amount
-#
-def minimumMonthlyPayment(monthlyInterest, amount):
-    return monthlyInterest * amount
-
-
-#
-## Calculates the interest paid
-def calculateInterestPaid(interest, balance):
-    return ((interest/12.0)*(balance))
-
-
-def calculatePrincipalPaid(minimumAmount, interestPaid):
-    return (minimumAmount - interestPaid)
-
-#
-## Three Floating Numbers
-#
-
-creditBalance = float(raw_input('Enter the outstanding balance on your credit card: '))
-creditCardInterest = float(raw_input('Enter the annual credit card interest rate as a decimal: '))
-creditCardMonthlyRate = float(raw_input('Entere the minimum monthly payment rate as a decimal: '))
-
-
-
-## storing minimum amount and paid amount
-minimumAmount = (0,creditBalance)
-paidAmount = 0
-
-
-## for loop
-for i in range(1,13):
-    print 'Month :',i
-    amount = minimumAmount[-1]
-    minimumPay = minimumMonthlyPayment(creditCardMonthlyRate,amount)
-    interestPaid = calculateInterestPaid(creditCardInterest,amount)
-    principaid = calculatePrincipalPaid(minimumPay, interestPaid)
-    paidAmount += minimumPay
-    remainAmount = amount - principaid
-    #minimumAmount = minimumAmount + remainAmount
-
-    minimumAmount = list(minimumAmount)
-    minimumAmount.insert(len(minimumAmount),remainAmount)
-    minimumAmount = tuple(minimumAmount)
-
-    print 'Minimum monthly payment: $',round(minimumPay,2)
-    print 'Principle paid: $',round(principaid,2)
-    print 'Remaining balance: $',round(remainAmount,2)
-
-
-## printing result
-print 'RESULT'
-print 'Total amount paid: $',round(paidAmount,2)
-print 'Remaining balance: $',round(minimumAmount[-1],2)
+main()
+    
