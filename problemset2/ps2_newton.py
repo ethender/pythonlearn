@@ -17,7 +17,18 @@ def evaluate_poly(poly, x):
     x: number
     returns: float
     """
-    # TO DO ... 
+    # TO DO ...
+    total = 0
+    i = 0
+    for coefficient in poly:
+        if i == 0:
+            total = total + coefficient
+        else:
+            total = total + (coefficient*(x**i))
+        i  = i + 1
+    #print 'Total: ',str(total)
+    return total
+        
 
 
 def compute_deriv(poly):
@@ -33,7 +44,21 @@ def compute_deriv(poly):
     poly: tuple of numbers, length > 0
     returns: tuple of numbers
     """
-    # TO DO ... 
+    # TO DO ...
+    total = ()
+    derivative = ''
+    i = 0
+    for coefficient in poly:
+        if i == 0:
+            total = total + (coefficient,)
+            derivative = '+'+str(coefficient)+derivative    
+        else:
+            total = total + (coefficient,)
+            derivative = '+'+str(coefficient)+'x^'+str(i)+derivative
+        i = i+1
+    print derivative
+    print total
+    
 
 def compute_root(poly, x_0, epsilon):
     """
